@@ -1,10 +1,44 @@
 import React from 'react';
-import { View } from 'react-native';
 
-// import { Container } from './styles';
+import {
+  Container,
+  Title,
+  Amount,
+  Footer,
+  Category,
+  Icon,
+  CategoryName,
+  Date,
+} from './styles';
 
-const TransactionCard: React.FC = () => {
-  return <View />;
-};
+interface CategoryProps {
+  name: string;
+  icon: string;
+}
 
-export default TransactionCard;
+interface Data {
+  title: string;
+  amount: string;
+  category: CategoryProps;
+  date: string;
+}
+
+interface Props {
+  data: Data;
+}
+
+export function TransactionCard({ data }: Props) {
+  return (
+    <Container>
+      <Title>{data.title}</Title>
+      <Amount>{data.amount}</Amount>
+      <Footer>
+        <Category>
+          <Icon name={data.category.icon} />
+          <CategoryName>{data.category.name}</CategoryName>
+        </Category>
+        <Date>{data.date}</Date>
+      </Footer>
+    </Container>
+  );
+}
