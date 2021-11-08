@@ -19,13 +19,14 @@ import {
   Transactions,
   Title,
   TransactionsList,
+  LogoutButton,
 } from './styles';
 
 export interface DataListProps extends TransactionCardProps {
   id: string;
 }
 
-const Dashboard: React.FC = () => {
+export function Dashboard() {
   const data: DataListProps[] = [
     {
       id: '1',
@@ -67,7 +68,9 @@ const Dashboard: React.FC = () => {
               <UserName>João</UserName>
             </User>
           </UserInfo>
-          <Icon name='power' />
+          <LogoutButton onPress={() => {}}>
+            <Icon name='power' />
+          </LogoutButton>
         </UserWrapper>
       </Header>
 
@@ -102,6 +105,4 @@ const Dashboard: React.FC = () => {
       </Transactions>
     </Container>
   );
-};
-
-export default Dashboard;
+}
