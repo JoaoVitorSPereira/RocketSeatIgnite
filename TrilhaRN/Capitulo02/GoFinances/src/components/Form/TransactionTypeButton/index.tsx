@@ -24,8 +24,8 @@ export function TransactionTypeButton({
     <Container isActive={isActive} type={type}>
       <Button {...rest}>
         <Icon name={icons[type]} type={type} />
+        <Title>{title}</Title>
       </Button>
-      <Title>{title}</Title>
     </Container>
   );
 }
