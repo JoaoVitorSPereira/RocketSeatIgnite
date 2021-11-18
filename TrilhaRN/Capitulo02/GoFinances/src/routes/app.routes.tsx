@@ -23,7 +23,7 @@ export function AppRoutes() {
       }}
     >
       <Screen
-        name='Dashboard'
+        name='Listagem'
         component={Dashboard}
         options={{
           tabBarIcon: ({ size, color }) => (
