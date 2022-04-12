@@ -19,7 +19,7 @@ import {
 } from './styles';
 
 export function SignIn() {
-  const { signInWithGoogle } = useAuth();
+  const { signInWithGoogle, signInWithApple } = useAuth();
 
   async function handleSignInWithGoogle() {
     try {
@@ -27,6 +27,15 @@ export function SignIn() {
     } catch (error) {
       console.log(error);
       Alert.alert('Erro ao conectar conta Google');
+    }
+  }
+
+  async function handleSignInWithApple() {
+    try {
+      await signInWithApple();
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Erro ao conectar conta Apple');
     }
   }
 
@@ -53,7 +62,11 @@ export function SignIn() {
             onPress={handleSignInWithGoogle}
           />
           {Platform.OS === 'ios' ? (
-            <SignInSocialButton title='Entrar com Apple' svg={AppleSvg} />
+            <SignInSocialButton
+              title='Entrar com Apple'
+              svg={AppleSvg}
+              onPress={handleSignInWithApple}
+            />
           ) : null}
         </FooterWrapper>
       </Footer>

@@ -12,6 +12,8 @@ import { useFocusEffect } from '@react-navigation/native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { useAuth } from '../../hooks/auth';
+
 import {
   Container,
   Header,
@@ -46,6 +48,7 @@ interface HighlightData {
 }
 
 export function Dashboard() {
+  const { signOut } = useAuth();
   const theme = useTheme();
   const [isLoading, setIsLoading] = useState(true);
   const [transactions, setTransactions] = useState<DataListProps[]>([]);
@@ -115,6 +118,7 @@ export function Dashboard() {
       transactions,
       'positive'
     );
+
     const lastTransactionExpensives = getLastTransactionDate(
       transactions,
       'negative'
@@ -181,7 +185,7 @@ export function Dashboard() {
                   <UserName>João</UserName>
                 </User>
               </UserInfo>
-              <LogoutButton onPress={() => {}}>
+              <LogoutButton onPress={() => signOut()}>
                 <Icon name='power' />
               </LogoutButton>
             </UserWrapper>
