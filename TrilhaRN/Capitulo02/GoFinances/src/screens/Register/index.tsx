@@ -23,6 +23,7 @@ import {
 } from './styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../../hooks/auth';
 
 interface FormData {
   name: string;
@@ -32,11 +33,12 @@ interface FormData {
 const schema = Yup.object().shape({
   name: Yup.string().required('Nome é obrigatório'),
   amount: Yup.number()
-    .typeError('Informe um valor numérico')
-    .positive('O vlaor não pode ser negativo'),
+    .typeError('Only numbers are allowed')
+    .positive('The value can not be negative'),
 });
 
 export function Register() {
+  const { user } = useAuth();
   const [transactionType, setTransactionType] = useState('');
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
   const navigation = useNavigation();
@@ -69,11 +71,11 @@ export function Register() {
 
   async function handleRegister(form: FormData) {
     if (!transactionType) {
-      return Alert.alert('Selecione o tipo da transação!');
+      return Alert.alert('Select the type of transaction!');
     }
 
     if (category.key === 'category') {
-      return Alert.alert('Selecione a categoria');
+      return Alert.alert('Select category!');
     }
     const newTransaction = {
       id: String(uuid.v4()),
@@ -85,7 +87,7 @@ export function Register() {
     };
 
     try {
-      const dataKey = '@gofinances:transactions';
+      const dataKey = `@gofinances:transactions_user:${user.id}`;
 
       const data = await AsyncStorage.getItem(dataKey);
 
@@ -99,10 +101,10 @@ export function Register() {
       setTransactionType('');
       setCategory({
         key: 'category',
-        name: 'Categoria',
+        name: 'Category',
       });
 
-      navigation.navigate('Listagem');
+      navigation.navigate('List');
     } catch (error) {
       console.log(error);
       Alert.alert('Não foi possível salvar');
@@ -132,7 +134,7 @@ export function Register() {
             <InputForm
               name='name'
               control={control}
-              placeholder='Nome'
+              placeholder='Name'
               autoCapitalize='sentences'
               autoCorrect={false}
               error={errors.name && errors.name.message}
@@ -140,7 +142,7 @@ export function Register() {
             <InputForm
               name='amount'
               control={control}
-              placeholder='Preço'
+              placeholder='Price'
               keyboardType='numeric'
               error={errors.amount && errors.amount.message}
             />
@@ -165,7 +167,7 @@ export function Register() {
             />
           </Fields>
 
-          <Button title='Enviar' onPress={handleSubmit(handleRegister)} />
+          <Button title='Send' onPress={handleSubmit(handleRegister)} />
         </Form>
         <Modal visible={categoryModalOpen}>
           <CategorySelect

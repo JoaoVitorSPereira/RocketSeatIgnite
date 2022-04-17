@@ -1,11 +1,12 @@
-import React from 'react';
-import { Alert, Platform } from 'react-native';
+import React, { useState } from 'react';
+import { ActivityIndicator, Alert, Platform } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 import AppleSvg from '../../assets/apple.svg';
 import GoogleSvg from '../../assets/google.svg';
 import LogoSvg from '../../assets/logo.svg';
 import { SignInSocialButton } from '../../components/SignInSocialButton';
+import theme from '../../global/styles/theme';
 import { useAuth } from '../../hooks/auth';
 
 import {
@@ -19,23 +20,28 @@ import {
 } from './styles';
 
 export function SignIn() {
+  const [isLoading, setIsLoading] = useState(false);
   const { signInWithGoogle, signInWithApple } = useAuth();
 
   async function handleSignInWithGoogle() {
     try {
-      await signInWithGoogle();
+      setIsLoading(true);
+      return await signInWithGoogle();
     } catch (error) {
       console.log(error);
       Alert.alert('Erro ao conectar conta Google');
+      setIsLoading(false);
     }
   }
 
   async function handleSignInWithApple() {
     try {
-      await signInWithApple();
+      setIsLoading(true);
+      return await signInWithApple();
     } catch (error) {
       console.log(error);
       Alert.alert('Erro ao conectar conta Apple');
+      setIsLoading(false);
     }
   }
 
@@ -69,6 +75,12 @@ export function SignIn() {
             />
           ) : null}
         </FooterWrapper>
+        {isLoading && (
+          <ActivityIndicator
+            color={theme.colors.shape}
+            style={{ marginTop: 18 }}
+          />
+        )}
       </Footer>
     </Container>
   );

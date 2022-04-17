@@ -84,6 +84,8 @@ function AuthProvider({ children }: AuthProviderProps) {
       });
 
       if (credential) {
+        const name = credential.fullName!.givenName!;
+        const photo = `https://ui-avatars.com/api/?name=${name}&length=1&background=0D8ABC&color=fff`;
         const userLogged = {
           id: String(credential.user),
           email: credential.email!,
